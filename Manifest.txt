@@ -1,0 +1,8 @@
+.autotest
+History.txt
+Manifest.txt
+README.txt
+Rakefile
+bin/dm_lucene_adapter
+lib/dm_lucene_adapter.rb
+test/test_dm_lucene_adapter.rb
