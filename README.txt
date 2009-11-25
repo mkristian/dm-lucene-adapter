@@ -12,9 +12,15 @@
 
 FIX (describe your package)
 
-== FEATURES/PROBLEMS:
+== FEATURES/PROBLEMS/LIMITATIONS:
 
-* FIX (list of features or problems)
+* can handle only resources with Serial
+
+* handles all properties internally as Strings, i.e. all GT, GTE, LT, LTE, Range queries do not work
+
+* limit and offset with sorting will retrieving the complete result set, sorts it and apply the limit and offset to it.
+
+* the current maven rake-plugin is personal fork, so things are not very usable for others yet
 
 == SYNOPSIS:
 
@@ -22,7 +28,7 @@ FIX (describe your package)
 
 == REQUIREMENTS:
 
-* FIX (list of requirements)
+* lucene-core-2.9.0.jar in classpath
 
 == INSTALL:
 

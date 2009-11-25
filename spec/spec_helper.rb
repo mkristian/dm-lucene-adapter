@@ -21,4 +21,4 @@ class Book
 
 end
 
-DataMapper.setup(:default, :adapter => :lucene, :index => "tmp/index")
+DataMapper.setup(:default, :adapter => :lucene, :path => "tmp")

@@ -1,4 +1,13 @@
-=== 1.0.0 / 2009-11-20
+=== 0.1.0 / 2009-XX-YY
+
+* creating, retrieving, deleting of resources works
+
+* basic search works with limit, offset, sort
+
+* fuzzy search via :my_property.like => "kristian"
+
+
+=== 0.0.0 / 2009-11-20
 
 * 1 major enhancement
 
