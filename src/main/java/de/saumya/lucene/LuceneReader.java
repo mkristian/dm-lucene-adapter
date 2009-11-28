@@ -94,7 +94,8 @@ public class LuceneReader {
             final int limit, final String query) throws StaleReaderException,
             CorruptIndexException, LockObtainFailedException, IOException,
             ParseException {
-        final QueryParser parser = new QueryParser("id",
+        final QueryParser parser = new QueryParser(Version.LUCENE_CURRENT,
+                "id",
                 new StandardAnalyzer(Version.LUCENE_CURRENT));
         if (query.startsWith("NOT ")) {
             final Query query3 = new WildcardQuery(new Term("id", "*"));

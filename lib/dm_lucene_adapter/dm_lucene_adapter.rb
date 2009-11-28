@@ -1,6 +1,3 @@
-require 'java'
-include_class "de.saumya.lucene.LuceneService"
-
 module DataMapper
   module Adapters
     class LuceneAdapter < AbstractAdapter

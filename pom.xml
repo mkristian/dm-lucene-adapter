@@ -2,24 +2,42 @@
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <groupId>de.saumya</groupId>
-  <artifactId>lucene</artifactId>
-  <packaging>jar</packaging>
+  <artifactId>dm-lucene-adapter</artifactId>
+  <packaging>gem</packaging>
   <version>0.1.0-SNAPSHOT</version>
-  <name>app</name>
-  <url>http://maven.apache.org</url>
+  <name>dm adapter for lucene</name>
+  <description>datamapper adapter for search index lucene</description>
+  <url>http://github.com/mkristian/dm-lucene-adapter</url>
   <dependencies>
     <dependency>
       <groupId>org.apache.lucene</groupId>
       <artifactId>lucene-core</artifactId>
-      <version>2.9.0</version>
+      <version>3.0.0</version>
     </dependency> 
   </dependencies>
+  <pluginRepositories>
+    <pluginRepository>
+      <id>saumya</id>
+      <name>Saumya's Plugins</name>
+      <url>http://mojo.saumya.de</url>
+      <layout>default</layout>
+    </pluginRepository>
+  </pluginRepositories>
   <build>
     <plugins>
       <plugin>
-	<groupId>org.jruby.plugins</groupId>
-	<artifactId>jruby-rake-plugin</artifactId>
-	<version>1.5.0dev</version>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <configuration>
+          <encoding>UTF-8</encoding>
+          <source>1.6</source>
+          <target>1.6</target>
+        </configuration>
+      </plugin>
+      <plugin>
+	<groupId>de.saumya.mojo</groupId>
+	<artifactId>jruby-maven-plugin</artifactId>
+	<version>0.3.0</version>
 	<executions>
 	  <execution>
 	    <id>spec</id>
@@ -27,16 +45,24 @@
 	      <goal>spec</goal>
 	    </goals>
 	  </execution>
+	</executions>
+      </plugin>
+      <plugin>
+	<groupId>de.saumya.mojo</groupId>
+	<artifactId>gem-maven-plugin</artifactId>
+	<version>0.3.0</version>
+        <extensions>true</extensions>
+	<!--executions>
 	  <execution>
 	    <phase>pre-integration-test</phase>
             <goals>
-              <goal>install-gems</goal>
+              <goal>install</goal>
 	    </goals>
 	    <configuration>
-	      <gems>rspec dm-core</gems>
+	      <gems>dm-core</gems>
 	    </configuration>
 	   </execution>
-	</executions>
+	</executions-->
       </plugin>
     </plugins>
   </build>
