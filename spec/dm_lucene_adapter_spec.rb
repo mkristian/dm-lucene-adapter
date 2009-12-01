@@ -91,6 +91,12 @@ describe DataMapper::Adapters::LuceneAdapter do
         @books.each { |b| b.author.should =~ /sanuka/ }
       end
 
+      it 'should find 5 with fuzzy query on total' do
+        @books = Book.all(:total.like => "sanaku corner")
+        @books.size.should == @size + @len
+        @books.each { |b| b.author.should =~ /sanuka/ }
+      end
+
       it 'should find 5 with single char wildcards query' do
         @books = Book.all(:author.like => "san?k?")
         @books.size.should == @size + @len

@@ -73,7 +73,7 @@ module DataMapper
         reader = lucene(query.model).create_reader
         if(query.conditions.nil?)
           result = []
-          
+
 #p query
 # TODO set limit, offset to default of sorting is non default
           reader.read_all(offset, limit).each do |resource|
@@ -86,9 +86,9 @@ module DataMapper
           result
         else
           ops = query.conditions.operands
-          if(ops.size == 1 && ops[0].class == DataMapper::Query::Conditions::EqualToComparison && ops[0].subject.name == :id)
+          if(ops.size == 1 && ops.first == :eql && ops.first.subject.name == :id)
             map = {}
-            reader.read(query.conditions.operands[0].value).each do |k,v|
+            reader.read(query.conditions.operands.first.value).each do |k,v|
               map[k] = v
             end
             [map]
@@ -117,11 +117,13 @@ module DataMapper
         ops.each do |comp|
           case comp.slug
           when :like
-            lquery += "#{comp.subject.name.to_s}:#{comp.value}"
-            unless comp.value =~ /%|_|\?|\*/
-              lquery += "~"
+            comp.value.split(/\s/).each do |value|
+              lquery += "#{comp.subject.name.to_s}:#{value}"
+              unless comp.value =~ /%|_|\?|\*/
+                lquery += "~"
+              end
+              lquery += " #{operator} "
             end
-            lquery += " #{operator} "
           when :eql
             lquery += "#{comp.subject.name.to_s}:\"#{comp.value}\" #{operator} "
           when :not
