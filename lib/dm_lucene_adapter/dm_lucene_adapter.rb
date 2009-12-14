@@ -72,8 +72,7 @@ module DataMapper
       def do_read(offset, limit, query)
         reader = lucene(query.model).create_reader
         if(query.conditions.nil?)
-          result = []
-
+          result = [] 
 #p query
 # TODO set limit, offset to default of sorting is non default
           reader.read_all(offset, limit).each do |resource|
@@ -152,7 +151,6 @@ module DataMapper
       #
       # @api semipublic
       def update(attributes, collection)
-        count = 0
         service = lucene(collection.model)
         deleter = service.create_deleter
         resources = read(collection.query)
@@ -169,7 +167,7 @@ module DataMapper
           resource.each { |k,v| map[k.to_s] = v.to_s}
           indexer.index(map)
         end
-        count
+        resources.size
       ensure
         indexer.close if indexer
         deleter.close if deleter

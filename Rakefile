@@ -5,7 +5,8 @@ require 'hoe'
 
 Hoe.spec 'dm-lucene-adapter' do
   p.developer('mkristian', 'm.kristian@web.de')
-  p.url = "http://dm-lucene-adapter.rubyforge.org"
+  p.extra_deps = [['dm-core', '~>0.10.1']]
+  p.url = "http://github.com/mkristian/dm-lucene-adapter"
 end
 
 # vim: syntax=ruby
