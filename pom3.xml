@@ -21,7 +21,6 @@
     </developer>
   </developers>
   <dependencies>
-<!--
     <dependency>
       <groupId>rubygems</groupId>
       <artifactId>extlib</artifactId>
@@ -40,7 +39,6 @@
       <version>0.10.2</version>
       <type>gem</type>
     </dependency>
--->
     <dependency>
       <groupId>org.apache.lucene</groupId>
       <artifactId>lucene-core</artifactId>
@@ -55,7 +53,7 @@
       <layout>default</layout>
     </pluginRepository>
   </pluginRepositories>
-<!--
+
   <repositories>
     <repository>
       <id>gemcutter</id>
@@ -70,7 +68,7 @@
       <layout>gem</layout>
     </repository>
   </repositories>
--->
+
   <build>
     <plugins>
       <plugin>
@@ -100,12 +98,10 @@
 	<artifactId>gem-maven-plugin</artifactId>
 	<version>0.7.0-SNAPSHOT</version>
         <extensions>true</extensions>
-<!--
 	<configuration>
 	  <gemHome>${project.build.directory}/rubygems</gemHome>
 	  <gemPath>${project.build.directory}/rubygems</gemPath>
 	</configuration>
--->
       </plugin>
     </plugins>
   </build>
