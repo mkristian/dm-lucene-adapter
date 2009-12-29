@@ -6,7 +6,7 @@
   <groupId>rubygems</groupId>
   <artifactId>dm-lucene-adapter</artifactId>
   <packaging>java-gem</packaging>
-  <version>0.1.1</version>
+  <version>0.2.0-SNAPSHOT</version>
   <name>dm adapter for lucene</name>
   <description>datamapper adapter for search index lucene</description>
   <url>http://github.com/mkristian/dm-lucene-adapter</url>
