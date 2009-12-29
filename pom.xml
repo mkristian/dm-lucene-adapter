@@ -1,10 +1,12 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project 
+    xmlns="http://maven.apache.org/POM/4.0.0" 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
-  <groupId>de.saumya.datamapper</groupId>
+  <groupId>rubygems</groupId>
   <artifactId>dm-lucene-adapter</artifactId>
   <packaging>java-gem</packaging>
-  <version>0.1.1-SNAPSHOT</version>
+  <version>0.1.1</version>
   <name>dm adapter for lucene</name>
   <description>datamapper adapter for search index lucene</description>
   <url>http://github.com/mkristian/dm-lucene-adapter</url>
@@ -21,26 +23,6 @@
     </developer>
   </developers>
   <dependencies>
-<!--
-    <dependency>
-      <groupId>rubygems</groupId>
-      <artifactId>extlib</artifactId>
-      <version>0.9.14</version>
-      <type>gem</type>
-    </dependency>
-    <dependency>
-      <groupId>rubygems</groupId>
-      <artifactId>addressable</artifactId>
-      <version>2.1.1</version>
-      <type>gem</type>
-    </dependency>
-    <dependency>
-      <groupId>rubygems</groupId>
-      <artifactId>dm-core</artifactId>
-      <version>0.10.2</version>
-      <type>gem</type>
-    </dependency>
--->
     <dependency>
       <groupId>org.apache.lucene</groupId>
       <artifactId>lucene-core</artifactId>
@@ -55,37 +37,22 @@
       <layout>default</layout>
     </pluginRepository>
   </pluginRepositories>
-<!--
-  <repositories>
-    <repository>
-      <id>gemcutter</id>
-      <releases>
-	<updatePolicy>never</updatePolicy>
-	<checksumPolicy>ignore</checksumPolicy>
-      </releases>
-      <snapshots>
-	<enabled>false</enabled>
-      </snapshots>
-      <url>http://www.gemcutter.org/gems</url>
-      <layout>gem</layout>
-    </repository>
-  </repositories>
--->
   <build>
+    <finalName>${project.artifactId}_ext</finalName>
     <plugins>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
         <configuration>
           <encoding>UTF-8</encoding>
-          <source>1.6</source>
-          <target>1.6</target>
+          <source>1.5</source>
+          <target>1.5</target>
         </configuration>
       </plugin>
       <plugin>
 	<groupId>de.saumya.mojo</groupId>
 	<artifactId>jruby-maven-plugin</artifactId>
-	<version>0.5.0</version>
+	<version>${jruby.maven.plugins}</version>
 	<executions>
 	  <execution>
 	    <id>spec</id>
@@ -98,15 +65,100 @@
       <plugin>
 	<groupId>de.saumya.mojo</groupId>
 	<artifactId>gem-maven-plugin</artifactId>
-	<version>0.7.0-SNAPSHOT</version>
+	<version>0.7.0</version>
         <extensions>true</extensions>
-<!--
-	<configuration>
-	  <gemHome>${project.build.directory}/rubygems</gemHome>
-	  <gemPath>${project.build.directory}/rubygems</gemPath>
-	</configuration>
--->
       </plugin>
     </plugins>
   </build>
+  <profiles>
+    <profile>
+      <id>install-lucene-as-gem</id>
+       <build>
+	 <plugins>
+	   <plugin>
+	     <groupId>de.saumya.mojo</groupId>
+	     <artifactId>gem-maven-plugin</artifactId>
+	     <version>${jruby.maven.plugins}</version>
+	     <extensions>true</extensions>
+	     <executions>
+	       <execution>
+		 <goals>
+		   <goal>gemify</goal>
+		 </goals>
+	       </execution>
+	     </executions>
+	     <configuration>
+	       <groupId>org.apache.lucene</groupId>
+	       <artifactId>lucene-core</artifactId>
+	       <version>3.0.0</version>
+	     </configuration>
+	   </plugin>
+	 </plugins>
+	 <defaultGoal>gem:gemify</defaultGoal>
+       </build>
+       <properties>
+	 <jruby.fork>false</jruby.fork>
+       </properties>
+    </profile>
+    <profile>
+      <id>maven3</id>
+      
+      <dependencies>
+	<dependency>
+	  <groupId>rubygems</groupId>
+	  <artifactId>extlib</artifactId>
+	  <version>0.9.14</version>
+	  <type>gem</type>
+	</dependency>
+	<dependency>
+	  <groupId>rubygems</groupId>
+	  <artifactId>addressable</artifactId>
+	  <version>2.1.1</version>
+	  <type>gem</type>
+	</dependency>
+	<dependency>
+	  <groupId>rubygems</groupId>
+	  <artifactId>dm-core</artifactId>
+	  <version>0.10.2</version>
+	  <type>gem</type>
+	</dependency>
+      </dependencies>
+
+      <repositories>
+	<repository>
+	  <id>gemcutter</id>
+	  <releases>
+	    <updatePolicy>never</updatePolicy>
+	    <checksumPolicy>ignore</checksumPolicy>
+	  </releases>
+	  <snapshots>
+	    <enabled>false</enabled>
+	  </snapshots>
+	  <url>http://www.gemcutter.org/gems</url>
+	  <layout>gem</layout>
+	</repository>
+      </repositories>
+    </profile>
+
+    <profile>
+      <id>localgems</id>
+      <build>
+	<plugins>
+	  <plugin>
+	    <groupId>de.saumya.mojo</groupId>
+	    <artifactId>gem-maven-plugin</artifactId>
+	    <version>${jruby.maven.plugins}</version>
+	    <extensions>true</extensions>
+	    <configuration>
+	      <gemHome>${project.build.directory}/rubygems</gemHome>
+	      <gemPath>${project.build.directory}/rubygems</gemPath>
+	    </configuration>
+	  </plugin>
+	</plugins>
+      </build>
+    </profile>
+  </profiles>
+  <properties>
+    <jruby.maven.plugins>0.7.0</jruby.maven.plugins>
+  </properties>
 </project>
