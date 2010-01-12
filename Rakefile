@@ -6,7 +6,7 @@ require 'hoe'
 LUCENE_VERSION = '3.0.0'
 HOE = Hoe.spec 'dm-lucene-adapter' do |p|
   p.developer('mkristian', 'm.kristian@web.de')
-  p.extra_deps = [['dm-core', '~>0.10.1']]
+  p.extra_deps = [['dm-core', '~>0.10.2']]
   p.url = "http://github.com/mkristian/dm-lucene-adapter"
 end
 
@@ -25,6 +25,12 @@ begin
 
 rescue LoadError
   warn 'To compile, install rake-compiler (gem install rake-compiler) or use Maven (mvn)'
+end
+
+desc 'Install the package as a gem.'
+task :install => [:package] do
+  gem = Dir['pkg/*.gem'].first
+  sh "gem install --local #{gem} --no-ri --no-rdoc"
 end
 
 # vim: syntax=ruby

@@ -1,3 +1,11 @@
+=== 0.1.1 / 2009-XX-YY
+
+* using new gem-maven-plugin
+
+* allow rake instead of mvn (fix from myabc)
+
+* added pom-install-lucene-as-gem.xml to allow easy install of lucene jar as gem
+
 === 0.1.0 / 2009-XX-YY
 
 * creating, retrieving, deleting of resources works

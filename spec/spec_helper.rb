@@ -1,6 +1,6 @@
 require 'rubygems'
 
-gem 'dm-core', ">0.10.0"
+#gem 'dm-core', ">0.10.0"
 require 'pathname'
 $LOAD_PATH << Pathname(__FILE__).dirname.parent.expand_path + 'lib'
 

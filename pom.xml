@@ -165,6 +165,6 @@
     </profile>
   </profiles>
   <properties>
-    <jruby.maven.plugins>0.7.0</jruby.maven.plugins>
+    <jruby.maven.plugins>0.8.0-SNAPSHOT</jruby.maven.plugins>
   </properties>
 </project>
