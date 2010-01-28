@@ -27,8 +27,10 @@ describe DataMapper::Adapters::LuceneAdapter do
     end
     b = Book.all 
     size.should == b.size + 2
-    book = Book.create(:author => "kristian", :title => "me and the corner")
-    id.should < book.id
+    book = Book.create(:author => "kristian 2", :title => "me and the corner 2")
+    id.should == book.id 
+    b = Book.all 
+    size.should == b.size + 1
   end
 
   it 'should read a single' do

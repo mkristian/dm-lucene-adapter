@@ -1,3 +1,13 @@
+=== 0.1.2 / 2010-01-28
+
+* fixed the next_id
+
+* moved to NIOFSDirectory
+
+* allow fuzzy search to sort by score instead of id
+
+* make full text search instead of equals complete query for non-fuzzy search
+
 === 0.1.1 / 2009-XX-YY
 
 * using new gem-maven-plugin

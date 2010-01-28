@@ -6,9 +6,9 @@
   <groupId>rubygems</groupId>
   <artifactId>dm-lucene-adapter</artifactId>
   <packaging>java-gem</packaging>
-  <version>0.2.0-SNAPSHOT</version>
-  <name>dm adapter for lucene</name>
-  <description>datamapper adapter for search index lucene</description>
+  <version>0.1.2</version>
+  <name>datamapper adapter for lucene</name>
+  <description>datamapper adapter for search index lucene from apache</description>
   <url>http://github.com/mkristian/dm-lucene-adapter</url>
   <licenses>
     <license>
@@ -58,7 +58,7 @@
       <plugin>
 	<groupId>de.saumya.mojo</groupId>
 	<artifactId>jruby-maven-plugin</artifactId>
-	<version>${jruby.maven.plugins}</version>
+	<version>${jruby.plugins.version}</version>
 	<executions>
 	  <execution>
 	    <id>spec</id>
@@ -71,7 +71,7 @@
       <plugin>
 	<groupId>de.saumya.mojo</groupId>
 	<artifactId>gem-maven-plugin</artifactId>
-	<version>0.7.0</version>
+	<version>${jruby.plugins.version}</version>
         <extensions>true</extensions>
       </plugin>
     </plugins>
@@ -84,7 +84,7 @@
 	   <plugin>
 	     <groupId>de.saumya.mojo</groupId>
 	     <artifactId>gem-maven-plugin</artifactId>
-	     <version>${jruby.maven.plugins}</version>
+	     <version>${jruby.plugins.version}</version>
 	     <extensions>true</extensions>
 	     <executions>
 	       <execution>
@@ -148,23 +148,15 @@
 
     <profile>
       <id>localgems</id>
-      <build>
-	<plugins>
-	  <plugin>
-	    <groupId>de.saumya.mojo</groupId>
-	    <artifactId>gem-maven-plugin</artifactId>
-	    <version>${jruby.maven.plugins}</version>
-	    <extensions>true</extensions>
-	    <configuration>
-	      <gemHome>${project.build.directory}/rubygems</gemHome>
-	      <gemPath>${project.build.directory}/rubygems</gemPath>
-	    </configuration>
-	  </plugin>
-	</plugins>
-      </build>
+      <properties>
+	<!-- this allows to configure it for rails-maven-plugin as well jruby-maven-plugin and gem-maven-plugin -->
+	<jruby.gem.home>${project.build.directory}/rubygems</jruby.gem.home>
+	<jruby.gem.path>${project.build.directory}/rubygems</jruby.gem.path>
+	<jruby.fork>true</jruby.fork>
+      </properties>
     </profile>
   </profiles>
   <properties>
-    <jruby.maven.plugins>0.8.0-SNAPSHOT</jruby.maven.plugins>
+    <jruby.plugins.version>0.8.0</jruby.plugins.version>
   </properties>
 </project>

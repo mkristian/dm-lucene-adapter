@@ -23,14 +23,6 @@ public class LuceneIndexer {
         this.reader = reader;
     }
 
-    public int nextId() throws IOException {
-        // TODO use fieldselector
-        final int max = this.reader.maxDoc();
-        return max == 0 ? 1 : Integer.parseInt(this.reader.document(max - 1)
-                .getField("id")
-                .stringValue()) + 1;
-    }
-
     public void index(final Map<String, String> resource)
             throws CorruptIndexException, IOException {
         final Document document = new Document();

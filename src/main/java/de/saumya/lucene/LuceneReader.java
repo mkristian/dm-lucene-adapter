@@ -13,6 +13,8 @@ import java.util.Map;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
+import org.apache.lucene.document.FieldSelector;
+import org.apache.lucene.document.FieldSelectorResult;
 import org.apache.lucene.index.CorruptIndexException;
 import org.apache.lucene.index.StaleReaderException;
 import org.apache.lucene.index.Term;
@@ -58,22 +60,58 @@ public class LuceneReader {
             final int limit) throws StaleReaderException,
             CorruptIndexException, LockObtainFailedException, IOException {
         final Query query = new WildcardQuery(new Term("id", "*"));
-        return readAll(offset, limit, query);
+        return readAll(offset, limit, query, false);
+    }
+
+    public int nextId() throws IOException {
+        final TopDocs docs = this.searcher.search(new WildcardQuery(new Term("id",
+                                                          "*")),
+                                                  null,
+                                                  1,
+                                                  new Sort(new SortField("id",
+                                                          SortField.INT,
+                                                          true)));
+
+        final Document doc = this.searcher.doc(docs.scoreDocs[0].doc,
+                                               new FieldSelector() {
+
+                                                   private static final long serialVersionUID = 1L;
+
+                                                   @Override
+                                                   public FieldSelectorResult accept(
+                                                           final String fieldName) {
+                                                       return "id".equals(fieldName)
+                                                               ? FieldSelectorResult.LOAD
+                                                               : FieldSelectorResult.NO_LOAD;
+                                                   }
+                                               });
+
+        return Integer.parseInt(doc.getField("id").stringValue()) + 1;
     }
 
     private Collection<Map<String, String>> readAll(final int offset,
-            int limit, final Query query) throws IOException,
-            CorruptIndexException {
-        final TopDocs docs = this.searcher.search(query,
-                                                  null,
-                                                  1000000,
-                                                  new Sort(new SortField("id",
-                                                          SortField.INT)));
+            int limit, final Query query, final boolean fuzzy)
+            throws IOException, CorruptIndexException {
+        int size = limit + offset;
+        size = size < 1 ? 100000 : size;
+        final TopDocs docs;
+
+        if (fuzzy) {
+            docs = this.searcher.search(query, size);
+        }
+        else {
+            docs = this.searcher.search(query,
+                                        null,
+                                        size,
+                                        new Sort(new SortField("id",
+                                                SortField.INT)));
+        }
         final List<Map<String, String>> result = new ArrayList<Map<String, String>>();
         int index = 0;
         for (final ScoreDoc sdoc : docs.scoreDocs) {
             if (index >= offset) {
                 final Map<String, String> map = new HashMap<String, String>();
+                map.put("score", "" + sdoc.score);
                 final Document doc = this.searcher.doc(sdoc.doc);
                 for (final Object o : doc.getFields()) {
                     final Field f = (Field) o;
@@ -102,10 +140,13 @@ public class LuceneReader {
             final BooleanQuery query2 = new BooleanQuery();
             query2.add(query3, Occur.MUST);
             query2.add(parser.parse(query.substring(4)), Occur.MUST_NOT);
-            return readAll(offset, limit, query2);
+            return readAll(offset, limit, query2, query.contains("~"));
         }
         else {
-            return readAll(offset, limit, parser.parse(query));
+            return readAll(offset,
+                           limit,
+                           parser.parse(query),
+                           query.contains("~"));
         }
     }
 

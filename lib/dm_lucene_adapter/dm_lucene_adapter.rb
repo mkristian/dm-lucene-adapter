@@ -27,9 +27,10 @@ module DataMapper
       # @api semipublic
       def create(resources)
         count = 0
+        reader = lucene(resources.first.model).create_reader
         indexer = lucene(resources.first.model).create_indexer
         resources.each do |resource|
-          resource.id = indexer.next_id
+          resource.id = reader.next_id
           map = {}
           resource.attributes.each { |k,v| map[k.to_s] = v.to_s}
           indexer.index(map)
@@ -38,6 +39,7 @@ module DataMapper
         count
       ensure
         indexer.close if indexer
+        reader.close if reader
       end
 
       # @param [Query] query
@@ -116,7 +118,7 @@ module DataMapper
         ops.each do |comp|
           case comp.slug
           when :like
-            comp.value.split(/\s/).each do |value|
+            comp.value.split(/\s+/).each do |value|
               lquery += "#{comp.subject.name.to_s}:#{value}"
               unless comp.value =~ /%|_|\?|\*/
                 lquery += "~"
@@ -124,7 +126,9 @@ module DataMapper
               lquery += " #{operator} "
             end
           when :eql
-            lquery += "#{comp.subject.name.to_s}:\"#{comp.value}\" #{operator} "
+            comp.value.to_s.split(/\s+/).each do |value|
+              lquery += "#{comp.subject.name.to_s}:\"#{value}\" #{operator} "
+            end
           when :not
             if lquery.size == 0
               lquery = "NOT "
